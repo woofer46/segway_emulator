@@ -2,56 +2,40 @@
 A simple example of an animated plot
 """
 import numpy as np
-import math
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import math
 
 fig, ax = plt.subplots()
-plt.xlim(-5, 5)
-plt.ylim(0, 6)
+plt.xlim(-15, 15)
+plt.ylim(0, 30)
 
-x = [0, 1]
-y = [0, 3]
-line, = ax.plot(x, y, "-o")
+line, = ax.plot([0, 0], [0, 10], '-o')
 
 
-class mayat():
-    h = 3
-    x = [0, 0]
-    y = [0, h]
-
-    def __init__(self):
-        pass
-
-    def new_coordinates(self, f):
-        print(x,y)
-        x1 = self.x[1] * math.cos(f) - self.y[1] * math.sin(f)(1.2)
-        y1 = self.x[1] * math.sin(f) + self.y[1] * math.cos(f)
-        x = [0, x1]
-        y = [0, y1]
-        print(x)
-        print(y)
-        return x, y
-
-
-mayat_1 = mayat()
+x = 0
+y = 0
+h = 10
+fi = 0.1
 
 
 def animate(i):
-    x, y = mayat_1.new_coordinates(math.pi / 2)
-    line.set_ydata(y)
-    line.set_xdata(x)
+    x_1 = x + math.sin(fi) * h
+    y_1 = x + math.cos(fi) * h
+
+    line.set_xdata([0, x_1])
+    line.set_ydata([0, y_1])
     return line,
 
 
-# Init only required for blitting to give a clean slate.
 def init():
-    # line.set_ydata(np.ma.array(x, mask=True))
-    # h = ball1.h
-    # line.set_ydata(h)
     return line,
 
 
-ani = animation.FuncAnimation(fig, animate, init_func=init,
-                              interval=50)
+ani = animation.FuncAnimation(
+    fig, animate,
+    np.arange(1, 200),
+    init_func=init,
+    interval=25, blit=True)
+
 plt.show()
