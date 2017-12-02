@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import math
+import time
 
 fig, ax = plt.subplots()
 plt.xlim(-15, 15)
@@ -17,14 +18,27 @@ x = 0
 y = 0
 h = 10
 fi = 0.1
-
+dt = 25 / 1000
+g = 9.8
+m = 5
+I = (1/3) * m * h ** 2
+omega = 0
+v = 0
 
 def animate(i):
+    global x,y,h,fi,dt,g,m,I,omega,v
+    a = math.cos(time.time() * 20) * 20
+    v = a * dt
+    x += v
+
+    angular_a = ( m * g * h * math.sin(fi) - m * a * h * math.cos(fi) ) / I
+    omega += angular_a * dt
+    fi += omega * dt
     x_1 = x + math.sin(fi) * h
     y_1 = x + math.cos(fi) * h
 
-    line.set_xdata([0, x_1])
-    line.set_ydata([0, y_1])
+    line.set_xdata([x, x_1])
+    line.set_ydata([y, y_1])
     return line,
 
 
